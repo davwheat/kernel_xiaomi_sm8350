@@ -14,6 +14,8 @@
 #include <linux/sched.h>
 #include <linux/ratelimit.h>
 #include <linux/timer.h>
+#include <linux/time.h>
+#include <linux/timekeeping.h>
 #include <linux/jiffies.h>
 #include <linux/sched/task.h>
 #ifdef CONFIG_DIAG_OVER_USB
@@ -647,10 +649,10 @@ void diag_get_timestamp(char *time_str)
 	struct timeval t;
 	struct tm broken_tm;
 
-	do_gettimeofday(&t);
+	ktime_get_real_ts64(&t);
 	if (!time_str)
 		return;
-	time_to_tm(t.tv_sec, 0, &broken_tm);
+	time64_to_tm(t.tv_sec, 0, &broken_tm);
 	scnprintf(time_str, DIAG_TS_SIZE, "%d:%d:%d:%ld", broken_tm.tm_hour,
 				broken_tm.tm_min, broken_tm.tm_sec, t.tv_usec);
 }
