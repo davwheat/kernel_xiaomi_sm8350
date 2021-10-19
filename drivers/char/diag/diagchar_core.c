@@ -646,7 +646,7 @@ void diag_record_stats(int type, int flag)
 
 void diag_get_timestamp(char *time_str)
 {
-	struct timeval t;
+	struct timespec64 t;
 	struct tm broken_tm;
 
 	ktime_get_real_ts64(&t);
